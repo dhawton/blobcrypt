@@ -147,7 +147,7 @@ import CKEditor from "@ckeditor/ckeditor5-vue";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import Spinner from "../components/Spinner";
 import ajax from "@/Api.js";
-import { privateDecrypt } from "crypto";
+// import { privateDecrypt } from "crypto";
 
 export default {
   name: "app",
@@ -217,16 +217,16 @@ export default {
           {
             id: this.$route.params.id,
             username: this.$store.getters.user.username,
-            pk: this.$store.getters.publicKey,
+            // pk: this.$store.getters.publicKey,
             showReaders: true
           }
         )
-        .then(resp => resp.data.message)
+        .then(resp => resp.data)
         .then(doc => {
-          let buff = new Buffer(doc, "base64");
+          /* let buff = new Buffer(doc, "base64");
           doc = JSON.parse(
             privateDecrypt(this.$store.getters.privateKey, buff).toString()
-          );
+          ); */
           this.title = doc.title;
           this.docDate = doc.date;
           this.editorData = doc.body;

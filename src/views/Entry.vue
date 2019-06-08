@@ -55,7 +55,7 @@ export default {
           {
             id: this.$route.params.id,
             username: this.$route.params.username
-            //            pk: this.$store.getters.publicKey
+            // pk: this.$store.getters.publicKey
           }
         )
         .then(resp => {
