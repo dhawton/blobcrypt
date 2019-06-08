@@ -75,7 +75,6 @@
     <b-modal
       id="deleteEntry"
       size="md"
-      cancel-disabled
       title="Delete Entry"
       ref="deletemodal"
       ok-title="Yes"
