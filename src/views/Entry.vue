@@ -22,7 +22,7 @@
 <script>
 import Spinner from "../components/Spinner";
 import ajax from "../Api";
-var { privateDecrypt } = require("crypto");
+var { privateDecrypt, constants } = require("crypto");
 
 export default {
   name: "Entry",
@@ -62,7 +62,13 @@ export default {
         .then(doc => {
           let buff = new Buffer(doc, "base64");
           this.doc = JSON.parse(
-            privateDecrypt(this.$store.getters.privateKey, buff).toString()
+            privateDecrypt(
+              {
+                key: this.$store.getters.privateKey,
+                padding: constants.RSA_NO_PADDING
+              },
+              buff
+            ).toString()
           );
         })
         .catch(err => {
