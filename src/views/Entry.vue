@@ -22,7 +22,7 @@
 <script>
 import Spinner from "../components/Spinner";
 import ajax from "../Api";
-var { privateDecrypt, constants } = require("crypto");
+//var { privateDecrypt, constants } = require("crypto");
 
 export default {
   name: "Entry",
@@ -54,12 +54,13 @@ export default {
           `/entries/${this.$route.params.username}/${this.$route.params.id}`,
           {
             id: this.$route.params.id,
-            username: this.$route.params.username,
-            pk: this.$store.getters.publicKey
+            username: this.$route.params.username
+            //            pk: this.$store.getters.publicKey
           }
         )
-        .then(resp => resp.data.message)
-        .then(doc => {
+        .then(resp => {
+          this.doc = resp.data;
+          /* .then(doc => {
           let buff = new Buffer(doc, "base64");
           this.doc = JSON.parse(
             privateDecrypt(
@@ -69,7 +70,7 @@ export default {
               },
               buff
             ).toString()
-          );
+          ); */
         })
         .catch(err => {
           this.doc = undefined;
