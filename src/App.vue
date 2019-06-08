@@ -22,7 +22,7 @@ export default {
       bypassCache: false
     })
       .then(user => this.$store.commit("user", user))
-      .catch(() => this.store.commit("user", undefined));
+      .catch(() => this.$store.commit("user", undefined));
 
     window.crypto.subtle
       .generateKey(

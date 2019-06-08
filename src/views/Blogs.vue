@@ -14,7 +14,7 @@
               />
               <EntryTable
                 showNew
-                showActions
+                :showActions="true"
                 :username="$store.getters.user.username"
                 v-else
                 :items="this.$store.getters.blogs"
@@ -51,7 +51,10 @@
               </b-row>
               <b-row v-if="!loadingfriend && this.$store.getters.sharedBlogs !== false">
                 <b-col md="12">
-                  <EntryTable :username="frienduser" :items="this.$store.getters.sharedBlogs"/>
+                  <SharedEntityTable
+                    :username="frienduser"
+                    :items="this.$store.getters.sharedBlogs"
+                  />
                 </b-col>
               </b-row>
             </b-card-text>
@@ -65,6 +68,7 @@
 <script>
 import Spinner from "../components/Spinner";
 import EntryTable from "../components/EntryTable";
+import SharedEntityTable from "../components/SharedEntityTable";
 import { mapGetters } from "vuex";
 
 export default {
@@ -80,7 +84,8 @@ export default {
   },
   components: {
     Spinner,
-    EntryTable
+    EntryTable,
+    SharedEntityTable
   },
   watch: {
     sharedBlogs(newValue, oldValue) {

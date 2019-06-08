@@ -70,10 +70,7 @@ export default new Vuex.Store({
         .get(`/meta/${username}`)
         .then(r => r.data)
         .then(meta => {
-          console.log(meta);
           if (username !== context.getters.user.username) {
-            console.log("Committing sharedBlogs");
-            console.dir(meta);
             context.commit("sharedBlogs", meta);
           } else {
             context.commit("blogs", meta);

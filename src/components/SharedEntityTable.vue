@@ -49,10 +49,9 @@
       <template slot="actions" slot-scope="row">
         <b-button
           size="sm"
-          variant="warning"
-          @click="$router.push({ path: `/editor/${row.item.id}` })"
-        >Edit</b-button>&nbsp;
-        <b-button size="sm" variant="danger" @click="deleteEntry(row.item.id)">Delete</b-button>
+          variant="primary"
+          @click="$router.push({ path: `/entry/${username}/${row.item.id}` })"
+        >View</b-button>
       </template>
     </b-table>
 
@@ -120,7 +119,7 @@
 import ajax from "../Api";
 
 export default {
-  name: "EntryTable",
+  name: "SharedEntryTable",
   data() {
     return {
       fields: [
