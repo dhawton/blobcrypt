@@ -1,0 +1,89 @@
+{
+    "identityPoolName": "blobcryptidentitypool",
+    "allowUnauthenticatedIdentities": false,
+    "lambdaLogPolicy": "blobcr_e73789fd_lambda_log_policy",
+    "openIdLambdaRoleName": "blobcr_e73789fd_openid_lambda_role",
+    "openIdRolePolicy": "blobcr_e73789fd_openid_pass_role_policy",
+    "openIdLambdaIAMPolicy": "blobcr_e73789fd_openid_lambda_iam_policy",
+    "openIdLogPolicy": "blobcr_e73789fd_openid_lambda_log_policy",
+    "userPoolName": "blobcrypt_userpool",
+    "autoVerifiedAttributes": [
+        "email"
+    ],
+    "mfaConfiguration": "OPTIONAL",
+    "mfaTypes": [
+        "SMS Text Message",
+        "TOTP"
+    ],
+    "roleName": "blobcre73789fd_sns-role",
+    "roleExternalId": "blobcre73789fd_role_external_id",
+    "policyName": "blobcre73789fd-sns-policy",
+    "smsAuthenticationMessage": "Your authentication code is {####}",
+    "smsVerificationMessage": "Your verification code is {####}",
+    "emailVerificationSubject": "BlobCrypt Email Verification",
+    "emailVerificationMessage": "Your verification code is {####}",
+    "defaultPasswordPolicy": false,
+    "passwordPolicyMinLength": 8,
+    "passwordPolicyCharacters": [],
+    "requiredAttributes": [
+        "email",
+        "family_name",
+        "given_name"
+    ],
+    "userpoolClientName": "blobcre73789fd_app_client",
+    "userpoolClientGenerateSecret": true,
+    "userpoolClientRefreshTokenValidity": "15",
+    "userpoolClientWriteAttributes": [
+        "birthdate",
+        "preferred_username",
+        "email",
+        "family_name",
+        "given_name"
+    ],
+    "userpoolClientReadAttributes": [
+        "address",
+        "birthdate",
+        "email",
+        "family_name",
+        "middle_name",
+        "given_name",
+        "phone_number",
+        "preferred_username",
+        "profile",
+        "updated_at",
+        "website",
+        "email_verified",
+        "phone_number_verified"
+    ],
+    "mfaLambdaRole": "blobcre73789fd_totp_lambda_role",
+    "mfaLambdaLogPolicy": "blobcre73789fd_totp_lambda_log_policy",
+    "mfaPassRolePolicy": "blobcre73789fd_totp_pass_role_policy",
+    "mfaLambdaIAMPolicy": "blobcre73789fd_totp_lambda_iam_policy",
+    "userpoolClientLambdaRole": "blobcre73789fd_userpoolclient_lambda_role",
+    "userpoolClientLogPolicy": "blobcre73789fd_userpoolclient_lambda_log_policy",
+    "userpoolClientLambdaPolicy": "blobcre73789fd_userpoolclient_lambda_iam_policy",
+    "userpoolClientSetAttributes": true,
+    "useDefault": "manual",
+    "authSelections": "identityPoolAndUserPool",
+    "resourceName": "blobcryptuserpool",
+    "thirdPartyAuth": false,
+    "hostedUI": false,
+    "authRoleName": {
+        "Ref": "AuthRoleName"
+    },
+    "unauthRoleName": {
+        "Ref": "UnauthRoleName"
+    },
+    "authRoleArn": {
+        "Fn::GetAtt": [
+            "AuthRole",
+            "Arn"
+        ]
+    },
+    "unauthRoleArn": {
+        "Fn::GetAtt": [
+            "UnauthRole",
+            "Arn"
+        ]
+    }
+}

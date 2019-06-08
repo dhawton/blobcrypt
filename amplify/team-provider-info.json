@@ -1,0 +1,19 @@
+{
+    "frontend": {
+        "awscloudformation": {
+            "AuthRoleName": "webdd-frontend-20190605195212-authRole",
+            "UnauthRoleArn": "arn:aws:iam::609673815888:role/webdd-frontend-20190605195212-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::609673815888:role/webdd-frontend-20190605195212-authRole",
+            "Region": "us-west-2",
+            "DeploymentBucketName": "webdd-frontend-20190605195212-deployment",
+            "UnauthRoleName": "webdd-frontend-20190605195212-unauthRole",
+            "StackName": "webdd-frontend-20190605195212",
+            "StackId": "arn:aws:cloudformation:us-west-2:609673815888:stack/webdd-frontend-20190605195212/7a3082b0-880e-11e9-a7b9-0a152f9ae918"
+        },
+        "categories": {
+            "auth": {
+                "blobcryptuserpool": {}
+            }
+        }
+    }
+}

@@ -1,0 +1,16 @@
+language: node_js
+node_js:
+  - "10"
+script:
+  - npm run build
+before_deploy:
+  - pip install --user awscli
+deploy:
+  on:
+    branch: master
+  provider: script
+  script: ~/.local/bin/aws s3 sync dist s3://www.blobcrypt.com --region=us-west-2 --delete --cache-control="max-age=21600"
+  skip_cleanup: true
+after_deploy:
+  - ~/.local/bin/aws configure set preview.cloudfront true
+  - ~/.local/bin/aws cloudfront create-invalidation --distribution-id $CLOUDFRONT_DISTRIBUTION_ID --paths "/*"

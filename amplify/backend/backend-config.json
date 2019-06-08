@@ -1,0 +1,8 @@
+{
+	"auth": {
+		"blobcryptuserpool": {
+			"service": "Cognito",
+			"providerPlugin": "awscloudformation"
+		}
+	}
+}
