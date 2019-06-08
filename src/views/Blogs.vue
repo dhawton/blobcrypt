@@ -51,7 +51,7 @@
               </b-row>
               <b-row v-if="!loadingfriend && this.$store.getters.sharedBlogs !== false">
                 <b-col md="12">
-                  <SharedEntityTable
+                  <SharedEntryTable
                     :username="frienduser"
                     :items="this.$store.getters.sharedBlogs"
                   />
@@ -68,7 +68,7 @@
 <script>
 import Spinner from "../components/Spinner";
 import EntryTable from "../components/EntryTable";
-import SharedEntityTable from "../components/SharedEntityTable";
+import SharedEntryTable from "../components/SharedEntryTable";
 import { mapGetters } from "vuex";
 
 export default {
@@ -85,7 +85,7 @@ export default {
   components: {
     Spinner,
     EntryTable,
-    SharedEntityTable
+    SharedEntryTable
   },
   watch: {
     sharedBlogs(newValue, oldValue) {
