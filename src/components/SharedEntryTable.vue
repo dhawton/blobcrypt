@@ -4,16 +4,10 @@
     <b-row>
       <b-col md="6" class="my-1">
         <b-button
-          v-if="showNew !== undefined"
-          size="sm"
-          variant="primary"
-          @click="$router.push({ path: '/editor/new' })"
-        >New Entry</b-button>
-        <b-button
           style="margin-left: 1rem;"
           size="sm"
           variant="orange"
-          @click="$router.push({ path: '/editor/new' })"
+          @click="EventBus.$emit('entryrefresh', action)"
         >Refresh</b-button>
       </b-col>
       <b-col md="6" class="my-1">
@@ -117,11 +111,13 @@
 
 <script>
 import ajax from "../Api";
+import EventBus from "../EventBus";
 
 export default {
   name: "SharedEntryTable",
   data() {
     return {
+      EventBus,
       fields: [
         {
           key: "id",
@@ -157,7 +153,7 @@ export default {
       saving: false
     };
   },
-  props: ["items", "username", "showNew", "showActions"],
+  props: ["items", "username", "showNew", "showActions", "action"],
   computed: {
     sortOptions() {
       // Create an options list from our fields

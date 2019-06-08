@@ -15,6 +15,7 @@
               <EntryTable
                 showNew
                 :showActions="true"
+                action="mine"
                 :username="$store.getters.user.username"
                 v-else
                 :items="this.$store.getters.blogs"
@@ -53,6 +54,7 @@
                 <b-col md="12">
                   <SharedEntryTable
                     :username="frienduser"
+                    action="shared"
                     :items="this.$store.getters.sharedBlogs"
                   />
                 </b-col>
@@ -70,6 +72,7 @@ import Spinner from "../components/Spinner";
 import EntryTable from "../components/EntryTable";
 import SharedEntryTable from "../components/SharedEntryTable";
 import { mapGetters } from "vuex";
+import EventBus from "../EventBus";
 
 export default {
   name: "Blogs",
@@ -101,6 +104,13 @@ export default {
     if (this.$store.getters.blogs === false) {
       this.$store.dispatch("getMeta", this.$store.getters.user.username);
     }
+    EventBus.$on("entryrefresh", action => {
+      if (action === "mine") {
+        this.$store.dispatch("getMeta", this.$store.getters.user.username);
+      } else if (action === "shared") {
+        this.$store.dispatch("getMeta", this.$store.getters.sharedBlogsUser);
+      }
+    });
   },
   methods: {
     loadFriend() {
