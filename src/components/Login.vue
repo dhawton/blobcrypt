@@ -1,6 +1,6 @@
 <template>
   <div style="text-align: center;">
-    <amplify-authenticator v-if="!signedIn" v-bind:authConfig="signupconfig"></amplify-authenticator>
+    <Authenticator v-if="!signedIn" v-bind:authConfig="signupconfig"></Authenticator>
     <b-modal
       id="processingModal"
       size="xl"
@@ -27,14 +27,15 @@
 </template>
 
 <script>
-import { components, AmplifyEventBus } from "aws-amplify-vue";
+import Authenticator from "./authenticator/Authenticator";
+import { AmplifyEventBus } from "aws-amplify-vue";
 import { Auth } from "aws-amplify";
 import ajax from "../Api";
 
 export default {
   name,
   components: {
-    ...components
+    Authenticator
   },
   computed: {
     signedIn() {
@@ -43,9 +44,10 @@ export default {
       return true;
     }
   },
-  created() {
+  mounted() {
     this.findUser();
     AmplifyEventBus.$on("authState", newState => {
+      console.log("Caught " + newState);
       if (this.lastState === "confirmSignUp" && newState === "signedIn") {
         this.modalProcessingShow = true;
         this.saving = true;
@@ -63,9 +65,11 @@ export default {
             this.$router.push({ path: "/error" });
           });
       } else if (newState === "signedIn") {
+        console.log("Caught signedIn without signup");
         this.findUser();
         this.$router.push({ path: "/" });
       }
+      this.lastState = newState;
     });
   },
   data() {
