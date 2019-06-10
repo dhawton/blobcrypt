@@ -83,7 +83,7 @@ export default {
         });
     },
     dateFormatter(value) {
-      const d = new Date(value);
+      const d = new Date(value / 1000);
 
       const months = [
         "Jan",
