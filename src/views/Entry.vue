@@ -82,6 +82,9 @@ export default {
           const k = Buffer.from(key.k, "hex");
           let buffer = Buffer.from(encMessage.m, "base64");
           let decipher = crypto.createDecipheriv(key.a, k, i);
+          if (key.a === "aes-256-gcm") {
+            decipher.setAuthTag(Buffer.from(key.y, "hex"));
+          }
           let decrypted = decipher.update(buffer);
           decrypted = Buffer.concat([decrypted, decipher.final()]);
           this.doc = JSON.parse(decrypted);
