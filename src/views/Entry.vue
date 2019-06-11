@@ -22,6 +22,7 @@
 <script>
 import Spinner from "../components/Spinner";
 import ajax from "../Api";
+import crypto from "crypto";
 //var { privateDecrypt, constants } = require("crypto");
 
 export default {
@@ -54,26 +55,44 @@ export default {
           `/entries/${this.$route.params.username}/${this.$route.params.id}`,
           {
             id: this.$route.params.id,
-            username: this.$route.params.username
-            // pk: this.$store.getters.publicKey
+            username: this.$route.params.username,
+            pk: this.$store.getters.publicKey,
+            version: 1
           }
         )
         .then(resp => {
-          this.doc = resp.data;
-          /* .then(doc => {
-          let buff = new Buffer(doc, "base64");
-          this.doc = JSON.parse(
-            privateDecrypt(
-              {
-                key: this.$store.getters.privateKey,
-                padding: constants.RSA_NO_PADDING
-              },
-              buff
-            ).toString()
-          ); */
+          const encMessage = resp.data;
+
+          const key = JSON.parse(
+            crypto
+              .privateDecrypt(
+                this.$store.getters.privateKey,
+                Buffer.from(encMessage.k, "base64")
+              )
+              .toString()
+          );
+
+          // new Buffer(textParts.shift(), 'hex');
+          const i = Buffer.from(key.i, "hex");
+          if (!["aes-256-cbc", "aes-256-gcm"].includes(key.a)) {
+            this.$store.commit("error", "Unsupported algorithm, MITM?");
+            this.$router.push({ path: "/error" });
+            return;
+          }
+          const k = Buffer.from(key.k, "hex");
+          let buffer = Buffer.from(encMessage.m, "base64");
+          let decipher = crypto.createDecipheriv(key.a, k, i);
+          let decrypted = decipher.update(buffer);
+          decrypted = Buffer.concat([decrypted, decipher.final()]);
+          this.doc = JSON.parse(decrypted);
         })
         .catch(err => {
           this.doc = undefined;
+          if (err.response === undefined) {
+            this.$store.commit("error", "Error decrypting entry");
+            this.$router.push({ path: "/error" });
+            return;
+          }
           if (err.response.status === 403) {
             this.error = "You do not have access to this object.";
           } else {

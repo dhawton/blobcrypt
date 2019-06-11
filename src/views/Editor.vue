@@ -147,7 +147,7 @@ import CKEditor from "@ckeditor/ckeditor5-vue";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import Spinner from "../components/Spinner";
 import ajax from "@/Api.js";
-// import { privateDecrypt } from "crypto";
+import crypto from "crypto";
 
 export default {
   name: "app",
@@ -217,16 +217,38 @@ export default {
           {
             id: this.$route.params.id,
             username: this.$store.getters.user.username,
-            // pk: this.$store.getters.publicKey,
+            pk: this.$store.getters.publicKey,
+            version: 1,
             showReaders: true
           }
         )
         .then(resp => resp.data)
         .then(doc => {
-          /* let buff = new Buffer(doc, "base64");
-          doc = JSON.parse(
-            privateDecrypt(this.$store.getters.privateKey, buff).toString()
-          ); */
+          const encMessage = doc;
+
+          const key = JSON.parse(
+            crypto
+              .privateDecrypt(
+                this.$store.getters.privateKey,
+                Buffer.from(encMessage.k, "base64")
+              )
+              .toString()
+          );
+
+          // new Buffer(textParts.shift(), 'hex');
+          const i = Buffer.from(key.i, "hex");
+          if (!["aes-256-cbc", "aes-256-gcm"].includes(key.a)) {
+            this.$store.commit("error", "Unsupported algorithm, MITM?");
+            this.$router.push({ path: "/error" });
+            return;
+          }
+          const k = Buffer.from(key.k, "hex");
+          let buffer = Buffer.from(encMessage.m, "base64");
+          let decipher = crypto.createDecipheriv(key.a, k, i);
+          let decrypted = decipher.update(buffer);
+          decrypted = Buffer.concat([decrypted, decipher.final()]);
+          doc = JSON.parse(decrypted);
+
           this.title = doc.title;
           this.docDate = doc.date;
           this.editorData = doc.body;
@@ -260,7 +282,7 @@ export default {
       this.saving = true;
       this.modalSavingShow = true;
       ajax
-        .post("/entries", body)
+        .post("/entriesv2", body)
         .then(r => r.data)
         .then(() => {
           this.$store.commit("blogs", false);
